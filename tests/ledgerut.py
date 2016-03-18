@@ -4,6 +4,7 @@
 import os
 import unittest
 import ledger.ledgerconf as ledgerconf
+import ledger.resource as resource
 
 
 class LedgerUT(unittest.TestCase):
@@ -21,6 +22,19 @@ class LedgerUT(unittest.TestCase):
 
         data = lconf.get_resource_info("nova")
         print "data: ", data
+
+    def test_fetch_resource(self):
+        print "test fetch resource"
+        fetch = resource.Fetch()
+        hostlist = ["v-cephmon-001-prod.lhr1.symcpe.net"]
+        resourcename = "/tmp/ceph.conf"
+        destpath = "/tmp/"
+
+        (result, failed_hosts) = fetch.fetch_resource(hostlist,
+                                                      resourcename,
+                                                      destpath)
+
+
 
 
 
