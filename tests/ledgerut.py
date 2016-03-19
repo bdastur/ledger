@@ -5,6 +5,7 @@ import os
 import unittest
 import ledger.ledgerconf as ledgerconf
 import ledger.resource as resource
+import ledger.ledger as ledger
 
 
 class LedgerUT(unittest.TestCase):
@@ -34,7 +35,14 @@ class LedgerUT(unittest.TestCase):
                                                       resourcename,
                                                       destpath)
 
+    def test_fetch_ledger_resource(self):
+        print "Test fetch ledger resource"
+        homedir = os.environ.get('HOME', None)
+        configfile = os.path.join(homedir, "ledgerconf.yaml")
+        print "config file: ", configfile
 
+        ledgermgr = ledger.Ledger(configfile)
+        ledgermgr.populate_resource("nova")
 
 
 

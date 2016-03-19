@@ -42,6 +42,10 @@ class LedgerConf(object):
             print "OS Exception: [%s] [file: %s]" % (err, config_file)
             return None
 
+        except IOError as err:
+            print "IO Exception: [%s] [file: %s]" % (err, config_file)
+            return None
+
         except yaml.parser.ParserError as parse_err:
             print "[%s] Parsing failed: [%s]" % (config_file, parse_err)
             return None
