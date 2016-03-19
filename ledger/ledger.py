@@ -43,6 +43,7 @@ class Ledger(object):
                 return
 
     def populate_resource(self,
+                          env,
                           resourcename,
                           latestonly=False):
         '''
@@ -55,37 +56,49 @@ class Ledger(object):
             + "_" + str(now.hour) + str(now.minute) + str(now.second)
 
         fetch = resource.Fetch()
+        #for env in self.config.keys():
+        resourceobj = self.confmgr.get_resource_info(resourcename,
+                                                     env=env)
+        hostlist = resourceobj['hosts']
+        print "hostlist: ", hostlist
+
+        # Build the destination path to save the files.
+        ledger_root = self.config[env]['ledger_root']
+        latest_dir = os.path.join(ledger_root, "latest")
+        latest_dest_dir = os.path.join(latest_dir, resourcename)
+
+        if not os.path.exists(latest_dir):
+            os.makedirs(latest_dir)
+
+        if not os.path.exists(latest_dest_dir):
+            os.makedirs(latest_dest_dir)
+
+        print "latest dir:", latest_dir
+
+        for resourcepath in resourceobj['resource_paths']:
+            print "resource path: ", resourcepath
+            (result, failed_hosts) = fetch.fetch_resource(hostlist,
+                                                          resourcepath,
+                                                          latest_dest_dir)
+
+        if not latestonly:
+            now = datetime.datetime.now()
+            curdate = str(now.year) + str(now.month) + str(now.day) \
+                + "_" + str(now.hour) + str(now.minute) + str(now.second)
+            now_dest_dir = os.path.join(ledger_root, curdate)
+            copy_tree(latest_dest_dir, now_dest_dir)
+
+    def populate_all_resources(self):
+        '''
+        Populate all resources.
+        '''
         for env in self.config.keys():
-            resourceobj = self.confmgr.get_resource_info(resourcename,
-                                                         env=env)
-            hostlist = resourceobj['hosts']
-            print "hostlist: ", hostlist
+            resources = self.config[env]['resources'].keys()
+            print "Resources: ", resources
+            for resourcename in resources:
+                print "Resourcename: ", resourcename
+                self.populate_resource(env, resourcename)
 
-            # Build the destination path to save the files.
-            ledger_root = self.config[env]['ledger_root']
-            latest_dir = os.path.join(ledger_root, "latest")
-            latest_dest_dir = os.path.join(latest_dir, resourcename)
-
-            if not os.path.exists(latest_dir):
-                os.makedirs(latest_dir)
-
-            if not os.path.exists(latest_dest_dir):
-                os.makedirs(latest_dest_dir)
-
-            print "latest dir:", latest_dir
-
-            for resourcepath in resourceobj['resource_paths']:
-                print "resource path: ", resourcepath
-                (result, failed_hosts) = fetch.fetch_resource(hostlist,
-                                                              resourcepath,
-                                                              latest_dest_dir)
-
-            if not latestonly:
-                now = datetime.datetime.now()
-                curdate = str(now.year) + str(now.month) + str(now.day) \
-                    + "_" + str(now.hour) + str(now.minute) + str(now.second)
-                now_dest_dir = os.path.join(ledger_root, curdate)
-                copy_tree(latest_dest_dir, now_dest_dir)
 
 
 
