@@ -42,7 +42,16 @@ class LedgerUT(unittest.TestCase):
         print "config file: ", configfile
 
         ledgermgr = ledger.Ledger(configfile)
-        ledgermgr.populate_resource("nova")
+        ledgermgr.populate_resource("test_environment",
+                                    "nova")
 
+    def test_fetch_all_ledger_resources(self):
+        print "Test populate all resources"
+        homedir = os.environ.get('HOME', None)
+        configfile = os.path.join(homedir, "ledgerconf.yaml")
+        print "config file: ", configfile
+
+        ledgermgr = ledger.Ledger(configfile)
+        ledgermgr.populate_all_resources()
 
 
