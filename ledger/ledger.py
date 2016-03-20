@@ -45,6 +45,7 @@ class Ledger(object):
     def populate_resource(self,
                           env,
                           resourcename,
+                          host=None,
                           latestonly=False):
         '''
         Populate the resource/file info for specified resource
@@ -59,7 +60,10 @@ class Ledger(object):
         #for env in self.config.keys():
         resourceobj = self.confmgr.get_resource_info(resourcename,
                                                      env=env)
-        hostlist = resourceobj['hosts']
+        if host is None:
+            hostlist = resourceobj['hosts']
+        else:
+            hostlist = [host]
         print "hostlist: ", hostlist
 
         # Build the destination path to save the files.
@@ -98,6 +102,45 @@ class Ledger(object):
             for resourcename in resources:
                 print "Resourcename: ", resourcename
                 self.populate_resource(env, resourcename)
+
+    def display_resource(self,
+                         env,
+                         resourcename,
+                         host=None):
+        '''
+        Display the specified resource.
+        '''
+        resourceobj = self.confmgr.get_resource_info(resourcename,
+                                                     env=env)
+        if host is None:
+            hostlist = resourceobj['hosts']
+            print "hostlist: ", hostlist
+        else:
+            # Only one host in the list.
+            hostlist = [host]
+
+        self.populate_resource(env,
+                               resourcename,
+                               latestonly=True)
+
+        # Now we display the resource.
+        ledger_root = self.config[env]['ledger_root']
+        latest_dir = os.path.join(ledger_root, "latest")
+        resource_dir = os.path.join(latest_dir, resourcename)
+        print "resource dir: ", resource_dir
+
+        for hostname in hostlist:
+            print "hostname: ", hostname
+            perhostpath = os.path.join(resource_dir, hostname)
+            print "perhostpath: ", perhostpath
+
+            for respath in resourceobj['resource_paths']:
+                srcpath = os.path.join(perhostpath, respath[1:])
+                print "File path: ", srcpath
+                if not os.path.exists(srcpath):
+                    print "path %s does not exist" % srcpath
+
+
 
 
 
