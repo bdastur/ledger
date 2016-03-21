@@ -8,6 +8,7 @@ Ledger CLI
 import os
 import sys
 import argparse
+import textwrap
 import prettytable
 import ledger.ledger as ledger
 
@@ -59,6 +60,9 @@ class LedgerCli(object):
         # SHOW.
         showparser = subparsers.add_parser("show",
                                            help="Show configuration")
+        showparser.add_argument("-e", "--environment",
+                                required=True,
+                                help="Specify environment for the resource")
         showparser.add_argument("-f", "--format",
                                 choices=["table", "json"],
                                 required=False,
@@ -87,6 +91,63 @@ class LedgerCli(object):
         hostname = None
         if self.namespace.node is not None:
             hostname = self.namespace.node
+
+        ledgermgr = ledger.Ledger(self.config_file)
+        cfgdict = ledgermgr.display_resource(self.namespace.environment,
+                                             self.namespace.resource,
+                                             host=hostname)
+
+        # Parse the config dict.
+        # Generate options list.
+        sections = {}
+        for host in cfgdict.keys():
+            hostobj = cfgdict[host]['config']
+            for section in hostobj.keys():
+                sections[section] = {}
+                options = set()
+                for option in hostobj[section].keys():
+                    options.add(option)
+                sections[section]['options'] = options
+
+        #print sections
+
+        # Build table.
+        headers = []
+        headers.append("SECTIONS")
+        headers.append("OPTIONS")
+        for host in cfgdict.keys():
+            headers.append(host)
+
+        table = prettytable.PrettyTable(headers)
+        table.align["SECTIONS"] = "l"
+        table.align["OPTIONS"] = "l"
+        for section in sections.keys():
+            for option in sections[section]['options']:
+                row = []
+                sectionstr = textwrap.fill(section, width=30)
+                row.append(sectionstr)
+                optionstr = textwrap.fill(option, width=30)
+                row.append(optionstr)
+                for host in cfgdict.keys():
+                    sectionval = cfgdict[host]['config'].get(section, None)
+                    if sectionval is None:
+                        row.append(" No Section")
+                        continue
+
+                    optionval = cfgdict[host]['config'][section].get(option,
+                                                                     None)
+                    if optionval is None:
+                        row.append("No options")
+                        continue
+                    optionstr = textwrap.fill(optionval, width=40)
+
+                    row.append(optionstr)
+                table.add_row(row)
+
+
+        print table
+
+
 
     def perform_list_env(self):
         '''

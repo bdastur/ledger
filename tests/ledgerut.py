@@ -80,7 +80,11 @@ class LedgerUT(unittest.TestCase):
                                      "testdata/nova.conf")
         print "resource path: ", resource_path
         resparse = resource.Parse()
-        resparse.parse_resource(resource_path)
+        cfgdict = resparse.parse_resource(resource_path)
+
+        import pprint
+        pp = pprint.PrettyPrinter()
+        pp.pprint(cfgdict)
 
     def test_parse_resource_invalid_ini(self):
         print "test parse resource (invalid ini)"

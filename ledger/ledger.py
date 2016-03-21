@@ -114,7 +114,7 @@ class Ledger(object):
                                                      env=env)
         if host is None:
             hostlist = resourceobj['hosts']
-            print "hostlist: ", hostlist
+            #print "hostlist: ", hostlist
         else:
             # Only one host in the list.
             hostlist = [host]
@@ -123,23 +123,35 @@ class Ledger(object):
                                resourcename,
                                latestonly=True)
 
-        # Now we display the resource.
+        # Now we Get the resource data.
         ledger_root = self.config[env]['ledger_root']
         latest_dir = os.path.join(ledger_root, "latest")
         resource_dir = os.path.join(latest_dir, resourcename)
-        print "resource dir: ", resource_dir
+        #print "resource dir: ", resource_dir
 
+        ledger_dict = {}
         for hostname in hostlist:
-            print "hostname: ", hostname
+            ledger_dict[hostname] = {}
+            ledger_dict[hostname]['config'] = {}
+            #print "hostname: ", hostname
             perhostpath = os.path.join(resource_dir, hostname)
-            print "perhostpath: ", perhostpath
+            #print "perhostpath: ", perhostpath
 
             for respath in resourceobj['resource_paths']:
                 srcpath = os.path.join(perhostpath, respath[1:])
-                print "File path: ", srcpath
+                #print "File path: ", srcpath
                 if not os.path.exists(srcpath):
-                    print "path %s does not exist" % srcpath
+                    #print "path %s does not exist" % srcpath
                     continue
+
+                # Get the resource config data.
+                parser = resource.Parse()
+                cfgdict = parser.parse_resource(srcpath)
+                ledger_dict[hostname]['config'] = cfgdict
+
+        return ledger_dict
+
+
 
     def get_environments_from_config(self):
         '''
@@ -148,7 +160,6 @@ class Ledger(object):
         '''
         envlist = []
         for env in self.config.keys():
-            print "Environment: ", env
             envlist.append(env)
 
         return envlist
