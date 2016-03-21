@@ -141,6 +141,18 @@ class Ledger(object):
                     print "path %s does not exist" % srcpath
                     continue
 
+    def get_environments_from_config(self):
+        '''
+        The function returns the environments from
+        the parsed config file
+        '''
+        envlist = []
+        for env in self.config.keys():
+            print "Environment: ", env
+            envlist.append(env)
+
+        return envlist
+
 
 
 
