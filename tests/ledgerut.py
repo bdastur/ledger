@@ -64,3 +64,27 @@ class LedgerUT(unittest.TestCase):
         ledgermgr.display_resource("test_environment",
                                    "nova")
 
+    def test_parse_resource_valid_ini(self):
+        print "test parse resource (valid ini)"
+        curpath = os.getcwd()
+        resource_path = os.path.join(curpath,
+                                     "testdata/nova.conf")
+        print "resource path: ", resource_path
+        resparse = resource.Parse()
+        resparse.parse_resource(resource_path)
+
+    def test_parse_resource_invalid_ini(self):
+        print "test parse resource (invalid ini)"
+        curpath = os.getcwd()
+        resource_path = os.path.join(curpath,
+                                     "testdata/invalid.conf")
+
+        resparse = resource.Parse()
+        resparse.parse_resource(resource_path)
+
+
+
+
+
+
+
