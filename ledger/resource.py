@@ -72,21 +72,30 @@ class Parse(object):
             return None
 
         # ini file.
-        ret = self.__parse_ini_file(resourcepath)
-        if ret is None:
+        cfgparser = self.__parse_ini_file(resourcepath)
+        if cfgparser is None:
             # Not an ini file. Try other format.
-            pass
+            print "Failed to parse %s" % resourcepath
+            return
 
-        for section in self.cfgparser.sections():
-            print "Section: ", section
+        cfgdict = {}
+        for section in cfgparser.sections():
+            if section == "COMMON":
+                sectionname = 'default'
+            else:
+                sectionname = section
+
+            cfgdict[sectionname] = {}
+
             try:
-                for (name, value) in self.cfgparser.items(section):
-                    print "%s: %s = %s" % (section, name, value)
+                for (name, value) in cfgparser.items(section):
+                    cfgdict[sectionname][name] = value
+                    #print "%s: %s = %s" % (section, name, value)
             except ConfigParser.InterpolationMissingOptionError as err:
                 print "[%s]" % err
                 continue
 
-
+        return cfgdict
 
     def __parse_ini_file(self, resourcepath):
         '''
@@ -122,9 +131,9 @@ class Parse(object):
 
         resourcepath = randomfile
 
-        self.cfgparser = RawConfigParser()
+        cfgparser = RawConfigParser()
         try:
-            self.cfgparser.read(resourcepath)
+            cfgparser.read(resourcepath)
         except ConfigParser.MissingSectionHeaderError as err:
             print "[%s] Invalid INI config [%s]" % \
                 (resourcepath, err)
@@ -132,6 +141,8 @@ class Parse(object):
             return None
 
         os.remove(randomfile)
+
+        return cfgparser
 
     def __generate_random_filename(self):
         import string
