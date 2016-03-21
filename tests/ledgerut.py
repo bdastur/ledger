@@ -35,6 +35,15 @@ class LedgerUT(unittest.TestCase):
                                                       resourcename,
                                                       destpath)
 
+    def test_get_environments(self):
+        print "Return env"
+        homedir = os.environ.get('HOME', None)
+        configfile = os.path.join(homedir, "ledgerconf.yaml")
+        print "Config file: ", configfile
+
+        ledgermgr = ledger.Ledger(configfile)
+        ledgermgr.get_environments_from_config()
+
     def test_fetch_ledger_resource(self):
         print "Test fetch ledger resource"
         homedir = os.environ.get('HOME', None)
