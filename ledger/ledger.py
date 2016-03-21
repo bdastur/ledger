@@ -139,6 +139,9 @@ class Ledger(object):
                 print "File path: ", srcpath
                 if not os.path.exists(srcpath):
                     print "path %s does not exist" % srcpath
+                    continue
+
+
 
 
 
