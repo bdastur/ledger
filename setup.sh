@@ -16,7 +16,7 @@ fi
 export ANSIBLE_HOST_KEY_CHECKING=False
 
 if [[ -z ${LEDGER_CONFIG_FILE} ]]; then
-    echo -n "Set LEDGER_CONFIG_FILE (y/n):"; read -s CONFFILE_OPTION 
+    echo -n "Set LEDGER_CONFIG_FILE (y/n):"; read CONFFILE_OPTION 
     if [[ $CONFFILE_OPTION == "y" ]]; then
         echo ""
         echo -n "Ledger config file: "; read LEDGER_CONFIG_FILE
