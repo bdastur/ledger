@@ -111,7 +111,10 @@ class LedgerCli(object):
                     options.add(option)
                 sections[section]['options'] = options
 
-        #print sections
+        #import pprint
+        #pp = pprint.PrettyPrinter()
+        #pp.pprint(sections)
+
         SECTION_COLUMN_WIDTH = 30
         OPTIONS_COLUMN_WIDTH = 30
         VALUES_COLUMN_WIDTH = 40
@@ -134,6 +137,11 @@ class LedgerCli(object):
         table.align[fmt_optionstr] = "l"
         for section in sections.keys():
             section_start = True
+
+            # Check if there are any options within this section.
+            # If not we skip over this.
+            if len(sections[section]['options']) == 0:
+                continue
             for option in sections[section]['options']:
                 row = []
                 if section_start is True:
@@ -168,7 +176,6 @@ class LedgerCli(object):
                 blank_row.append("-"*VALUES_COLUMN_WIDTH)
             table.add_row(blank_row)
 
-
         print table
 
     def perform_list_env(self):
@@ -202,8 +209,6 @@ class LedgerCli(object):
             return False
 
         return True
-
-
 
 
 
