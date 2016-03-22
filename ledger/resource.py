@@ -106,7 +106,6 @@ class Parse(object):
         # Remove comments, blanklines, also modify section name
         # from Default to COMMON.
         randomname = self.__generate_random_filename()
-        print "Random name: ", randomname
         randomfile = os.path.join("/tmp", randomname)
 
         fhandle = open(resourcepath, 'r')
