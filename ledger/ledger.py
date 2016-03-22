@@ -27,9 +27,7 @@ class Ledger(object):
         Generate the root directories.
         '''
         for env in self.config.keys():
-            print "env: ", env
             ledger_root = self.config[env]['ledger_root']
-            print "ledger root: ", ledger_root
             try:
                 if os.path.exists(ledger_root):
                     # Since the path exists, we need not do anything.
@@ -64,7 +62,6 @@ class Ledger(object):
             hostlist = resourceobj['hosts']
         else:
             hostlist = [host]
-        print "hostlist: ", hostlist
 
         # Build the destination path to save the files.
         ledger_root = self.config[env]['ledger_root']
@@ -77,10 +74,7 @@ class Ledger(object):
         if not os.path.exists(latest_dest_dir):
             os.makedirs(latest_dest_dir)
 
-        print "latest dir:", latest_dir
-
         for resourcepath in resourceobj['resource_paths']:
-            print "resource path: ", resourcepath
             (result, failed_hosts) = fetch.fetch_resource(hostlist,
                                                           resourcepath,
                                                           latest_dest_dir)
@@ -98,9 +92,7 @@ class Ledger(object):
         '''
         for env in self.config.keys():
             resources = self.config[env]['resources'].keys()
-            print "Resources: ", resources
             for resourcename in resources:
-                print "Resourcename: ", resourcename
                 self.populate_resource(env, resourcename)
 
     def display_resource(self,

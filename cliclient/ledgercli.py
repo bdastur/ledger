@@ -21,7 +21,6 @@ class LedgerCli(object):
     def __init__(self):
         # Parse Command line arguments.
         self.namespace = self.__parse_arguments()
-        print self.namespace
 
         # Get the ledger configration file.
         #1. Check in ~/$HOME/ledger.conf
@@ -88,7 +87,9 @@ class LedgerCli(object):
         '''
         SHOW Operation handler.
         '''
-        print "show operation: "
+        if not self.__is_valid_env(self.namespace.environment):
+            sys.exit()
+
         hostname = None
         if self.namespace.node is not None:
             hostname = self.namespace.node
@@ -188,6 +189,22 @@ class LedgerCli(object):
             table.add_row([env, ""])
 
         print table
+
+    def __is_valid_env(self, env):
+        '''
+        Validate the env variable
+        '''
+        ledgermgr = ledger.Ledger(self.config_file)
+        envlist = ledgermgr.get_environments_from_config()
+
+        if env not in envlist:
+            print "Invalid environment [%s]" % env
+            return False
+
+        return True
+
+
+
 
 
 def main():
