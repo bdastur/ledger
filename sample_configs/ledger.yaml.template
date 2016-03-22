@@ -1,0 +1,22 @@
+---
+"<ENV NAME>":
+  ledger_root: "<Path to location where ledger temporarily saves data>"
+  resources:
+      <name of resource: can be name of the service, something that will help to identify the resource>
+        hosts:
+          - <hostname or ip address of host where configuration file is located>
+          - <hostname or ip address>
+        resource_paths:
+          - <path to the configuration file>
+          - <path to the configuration file>
+      nova:
+          hosts:
+              - "100.100.100.200"
+              - "100.100.100.201"
+              - "100.100.100.32"
+          resource_paths:
+              - "/etc/nova/nova.conf"
+              - "/etc/nova/api-paste.ini"
+...
+
+
