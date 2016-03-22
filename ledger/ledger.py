@@ -149,9 +149,10 @@ class Ledger(object):
                 cfgdict = parser.parse_resource(srcpath)
                 ledger_dict[hostname]['config'] = cfgdict
 
+                # Cleanup the config file as currently it is not encrypted.
+                os.remove(srcpath)
+
         return ledger_dict
-
-
 
     def get_environments_from_config(self):
         '''
@@ -163,12 +164,6 @@ class Ledger(object):
             envlist.append(env)
 
         return envlist
-
-
-
-
-
-
 
 
 
