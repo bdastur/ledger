@@ -105,6 +105,28 @@ class LedgerUT(unittest.TestCase):
         print prettyterm.fmtstring("Highlight RED", highlight="red")
         print prettyterm.fmtstring("Blinking Cyan", color="cyan",
                                    attrs=['blink'])
+        print prettyterm.fmtstring("Blue String", color="blue")
+        print prettyterm.fmtstring("Yellow highlight", highlight="yellow")
+        print prettyterm.fmtstring("Green highlight", highlight="green")
+        print prettyterm.fmtstring("Red highlight", highlight="red")
+        print prettyterm.fmtstring("Blue highlight", highlight="blue")
+
+        print "RAW", "========="
+        print "\033["+"30"+"m"+"No 30"+"\033[0m"
+        print "\033["+"0;33"+"m"+"No 33"+"\033[0m"
+        print "\033["+"0;34"+"m"+"No 34"+"\033[0m"
+        print "\033["+"0;35"+"m"+"No 35"+"\033[0m"
+        print "\033["+"0;40"+"m"+"No 40"+"\033[0m"
+        print "\033["+"0;41"+"m"+"No 41"+"\033[0m"
+        print "\033["+"0;43"+"m"+"No 43"+"\033[0m"
+        print "\033["+"0;33"+"m"+"No 33"+"\033[0m"
+        print "\033["+"0;33"+"m"+"No 33"+"\033[0m"
+        print "\033["+"0;33"+"m"+"No 33"+"\033[0m"
+        print "\033["+"0;33"+"m"+"No 33"+"\033[0m"
+
+
+
+
 
 
 
