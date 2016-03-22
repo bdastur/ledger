@@ -115,8 +115,8 @@ class LedgerCli(object):
         #pp = pprint.PrettyPrinter()
         #pp.pprint(sections)
 
-        SECTION_COLUMN_WIDTH = 30
-        OPTIONS_COLUMN_WIDTH = 30
+        SECTION_COLUMN_WIDTH = 25
+        OPTIONS_COLUMN_WIDTH = 25
         VALUES_COLUMN_WIDTH = 40
 
         # Build table.
@@ -154,6 +154,7 @@ class LedgerCli(object):
                 row.append(sectionstr)
                 optionstr = textwrap.fill(option, width=OPTIONS_COLUMN_WIDTH)
                 row.append(optionstr)
+                check_option_val = []
                 for host in cfgdict.keys():
                     sectionval = cfgdict[host]['config'].get(section, None)
                     if sectionval is None:
@@ -162,11 +163,22 @@ class LedgerCli(object):
 
                     optionval = cfgdict[host]['config'][section].get(option,
                                                                      None)
+                    check_diff = False
+                    if len(check_option_val) != 0:
+                        if optionval not in check_option_val:
+                            check_diff = True
+                    check_option_val.append(optionval)
+
                     if optionval is None:
                         row.append("No options")
                         continue
+
                     optionstr = textwrap.fill(optionval,
                                               width=VALUES_COLUMN_WIDTH)
+                    if check_diff:
+                        optionstr = prettyterm.fmtstring(optionstr,
+                                                         highlight="yellow",
+                                                         attrs=['bold'])
 
                     row.append(optionstr)
                 table.add_row(row)
