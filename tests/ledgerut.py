@@ -6,6 +6,7 @@ import unittest
 import ledger.ledgerconf as ledgerconf
 import ledger.resource as resource
 import ledger.ledger as ledger
+import ledger.prettyterm as prettyterm
 
 
 class LedgerUT(unittest.TestCase):
@@ -94,6 +95,17 @@ class LedgerUT(unittest.TestCase):
 
         resparse = resource.Parse()
         resparse.parse_resource(resource_path)
+
+    def test_pretty_term(self):
+        print "Pretty Term Module"
+        print prettyterm.fmtstring("Red String", color="red")
+        print prettyterm.fmtstring("Green String", color="green")
+        print prettyterm.fmtstring("Green bold string", color="green",
+                                   attrs=['bold'])
+        print prettyterm.fmtstring("Highlight RED", highlight="red")
+        print prettyterm.fmtstring("Blinking Cyan", color="cyan",
+                                   attrs=['blink'])
+
 
 
 
