@@ -11,6 +11,7 @@ import argparse
 import textwrap
 import prettytable
 import ledger.ledger as ledger
+import ledger.prettyterm as prettyterm
 
 
 class LedgerCli(object):
@@ -110,23 +111,39 @@ class LedgerCli(object):
                 sections[section]['options'] = options
 
         #print sections
+        SECTION_COLUMN_WIDTH = 30
+        OPTIONS_COLUMN_WIDTH = 30
+        VALUES_COLUMN_WIDTH = 40
 
         # Build table.
         headers = []
-        headers.append("SECTIONS")
-        headers.append("OPTIONS")
+        fmt_sectionstr = prettyterm.fmtstring("SECTIONS",
+                                              attrs=['bold'])
+        fmt_optionstr = prettyterm.fmtstring("OPTIONS",
+                                             attrs=['bold'])
+        headers.append(fmt_sectionstr)
+        headers.append(fmt_optionstr)
         for host in cfgdict.keys():
-            headers.append(host)
+            fmt_hoststr = prettyterm.fmtstring(host,
+                                               attrs=['bold'])
+            headers.append(fmt_hoststr)
 
         table = prettytable.PrettyTable(headers)
-        table.align["SECTIONS"] = "l"
-        table.align["OPTIONS"] = "l"
+        table.align[fmt_sectionstr] = "l"
+        table.align[fmt_optionstr] = "l"
         for section in sections.keys():
+            section_start = True
             for option in sections[section]['options']:
                 row = []
-                sectionstr = textwrap.fill(section, width=30)
+                if section_start is True:
+                    sectionstr = textwrap.fill(section,
+                                               width=SECTION_COLUMN_WIDTH)
+                    section_start = False
+                else:
+                    sectionstr = textwrap.fill("",
+                                               width=SECTION_COLUMN_WIDTH)
                 row.append(sectionstr)
-                optionstr = textwrap.fill(option, width=30)
+                optionstr = textwrap.fill(option, width=OPTIONS_COLUMN_WIDTH)
                 row.append(optionstr)
                 for host in cfgdict.keys():
                     sectionval = cfgdict[host]['config'].get(section, None)
@@ -139,15 +156,19 @@ class LedgerCli(object):
                     if optionval is None:
                         row.append("No options")
                         continue
-                    optionstr = textwrap.fill(optionval, width=40)
+                    optionstr = textwrap.fill(optionval,
+                                              width=VALUES_COLUMN_WIDTH)
 
                     row.append(optionstr)
                 table.add_row(row)
+            blank_row = ["-"*SECTION_COLUMN_WIDTH,
+                         "-" * OPTIONS_COLUMN_WIDTH]
+            for host in cfgdict.keys():
+                blank_row.append("-"*VALUES_COLUMN_WIDTH)
+            table.add_row(blank_row)
 
 
         print table
-
-
 
     def perform_list_env(self):
         '''
@@ -156,9 +177,13 @@ class LedgerCli(object):
         print "list env"
         ledgermgr = ledger.Ledger(self.config_file)
         envlist = ledgermgr.get_environments_from_config()
-        table = prettytable.PrettyTable(["Name", "Description"])
-        table.align["Name"] = "l"
-        table.align["Description"] = "l"
+
+        fmt_name = prettyterm.fmtstring("Name", attrs=['bold'])
+        fmt_desc = prettyterm.fmtstring("Description", attrs=['bold'])
+
+        table = prettytable.PrettyTable([fmt_name, fmt_desc])
+        table.align[fmt_name] = "l"
+        table.align[fmt_desc] = "l"
         for env in envlist:
             table.add_row([env, ""])
 
