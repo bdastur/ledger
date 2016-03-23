@@ -150,7 +150,7 @@ Setting up Ledger is super simple:
 
 Here's how we set up:
 
-    <bold>:~ behzad_dastur$ mkdir ledger_workingdir</bold>
+    *:~ behzad_dastur$ mkdir ledger_workingdir*
     <bold>:~ behzad_dastur$ cd ledger_workingdir/</bold>
     :ledger_workingdir behzad_dastur$ git clone https://github.com/bdastur/ledger.git
        Cloning into 'ledger'...
