@@ -149,10 +149,10 @@ Display All environments configured in ledger conf:
 Setting up Ledger is super simple:
 
 Here's how we set up:
-1. Create a working directory
-2. cd to the working directory
-3. Clone the ledger git repo
-4. source setup.sh
+ -  Create a working directory
+ -  cd to the working directory
+ -  Clone the ledger git repo
+ -  source setup.sh
 
 Example run:
 
