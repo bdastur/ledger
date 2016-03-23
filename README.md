@@ -145,4 +145,64 @@ Display All environments configured in ledger conf:
                   - "/etc/nova/nova.conf"
     ...
 
+## Setup:
+Setting up Ledger is super simple:
+
+Here's how we set up:
+
+    <bold>:~ behzad_dastur$ mkdir ledger_workingdir</bold>
+    <bold>:~ behzad_dastur$ cd ledger_workingdir/</bold>
+    :ledger_workingdir behzad_dastur$ git clone https://github.com/bdastur/ledger.git
+       Cloning into 'ledger'...
+       remote: Counting objects: 148, done.
+       remote: Compressing objects: 100% (120/120), done.
+       remote: Total 148 (delta 63), reused 73 (delta 11), pack-reused 0
+       Receiving objects: 100% (148/148), 59.20 KiB | 0 bytes/s, done.
+       Resolving deltas: 100% (63/63), done.
+       Checking connectivity... done.
+    <bold>:ledger_workingdir behzad_dastur$ cd ledger/</bold>
+    <bold>:ledger behzad_dastur$ source setup.sh</bold>
+
+The setup.sh script will ask for your remote password to access the hosts. Also a path to your ledger config file.
+It will pull other repositories like ansible, pyansible and set the correct python path.
+
+If the setup. is successfull, you should be able to use ledgercli.py from that point on.
+
+Here's how the setup.sh script run looks:
+
+    <bold>:ledger behzad_dastur$ source setup.sh</bold>
+    <bold>Remote Password for behzad_dastur:</bold> 
+    Set LEDGER_CONFIG_FILE (y/n):<bold>y</bold>
+
+    Ledger config file: <bold>/home/behzad_dastur/ledgerconf.yaml</bold>
+    pulling repo: [http://github.com/ansible/ansible.git]   ---> [DONE]
+    pulling repo: [https://github.com/bdastur/spam.git]   ---> [DONE]
+    running egg_info
+    creating lib/ansible.egg-info
+    writing requirements to lib/ansible.egg-info/requires.txt
+    writing lib/ansible.egg-info/PKG-INFO
+    writing top-level names to lib/ansible.egg-info/top_level.txt
+    writing dependency_links to lib/ansible.egg-info/dependency_links.txt
+    writing manifest file 'lib/ansible.egg-info/SOURCES.txt'
+    reading manifest file 'lib/ansible.egg-info/SOURCES.txt'
+    reading manifest template 'MANIFEST.in'
+    no previously-included directories found matching 'v2'
+    no previously-included directories found matching 'docsite'
+    no previously-included directories found matching 'ticket_stubs'
+    no previously-included directories found matching 'test'
+    no previously-included directories found matching 'hacking'
+    no previously-included directories found matching 'lib/ansible/modules/core/.git'
+    no previously-included directories found matching 'lib/ansible/modules/extras/.git'
+    writing manifest file 'lib/ansible.egg-info/SOURCES.txt'
+
+    Setting up Ansible to run out of checkout...
+
+    PATH=/Users/behzad_dastur/ledger_workingdir/ansible_stable1.9/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
+    PYTHONPATH=/Users/behzad_dastur/ledger_workingdir/ansible_stable1.9/lib:/Users/behzad_dastur/ledger_workingdir/pyansible:/Users/behzad_dastur/ledger_workingdir/ledger
+    MANPATH=/Users/behzad_dastur/ledger_workingdir/ansible_stable1.9/docs/man:
+
+    Remember, you may wish to specify your host file with -i
+
+    Done!
+
 
