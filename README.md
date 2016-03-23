@@ -149,9 +149,15 @@ Display All environments configured in ledger conf:
 Setting up Ledger is super simple:
 
 Here's how we set up:
+1. Create a working directory
+2. cd to the working directory
+3. Clone the ledger git repo
+4. source setup.sh
 
-    *:~ behzad_dastur$ mkdir ledger_workingdir*
-    <bold>:~ behzad_dastur$ cd ledger_workingdir/</bold>
+Example run:
+
+    :~ behzad_dastur$ mkdir ledger_workingdir
+    :~ behzad_dastur$ cd ledger_workingdir/
     :ledger_workingdir behzad_dastur$ git clone https://github.com/bdastur/ledger.git
        Cloning into 'ledger'...
        remote: Counting objects: 148, done.
@@ -160,8 +166,8 @@ Here's how we set up:
        Receiving objects: 100% (148/148), 59.20 KiB | 0 bytes/s, done.
        Resolving deltas: 100% (63/63), done.
        Checking connectivity... done.
-    <bold>:ledger_workingdir behzad_dastur$ cd ledger/</bold>
-    <bold>:ledger behzad_dastur$ source setup.sh</bold>
+    :ledger_workingdir behzad_dastur$ cd ledger/
+    :ledger behzad_dastur$ source setup.sh
 
 The setup.sh script will ask for your remote password to access the hosts. Also a path to your ledger config file.
 It will pull other repositories like ansible, pyansible and set the correct python path.
@@ -170,11 +176,11 @@ If the setup. is successfull, you should be able to use ledgercli.py from that p
 
 Here's how the setup.sh script run looks:
 
-    <bold>:ledger behzad_dastur$ source setup.sh</bold>
-    <bold>Remote Password for behzad_dastur:</bold> 
-    Set LEDGER_CONFIG_FILE (y/n):<bold>y</bold>
+    :ledger behzad_dastur$ source setup.sh
+    Remote Password for behzad_dastur:<
+    Set LEDGER_CONFIG_FILE (y/n):y
 
-    Ledger config file: <bold>/home/behzad_dastur/ledgerconf.yaml</bold>
+    Ledger config file: /home/behzad_dastur/ledgerconf.yaml
     pulling repo: [http://github.com/ansible/ansible.git]   ---> [DONE]
     pulling repo: [https://github.com/bdastur/spam.git]   ---> [DONE]
     running egg_info
